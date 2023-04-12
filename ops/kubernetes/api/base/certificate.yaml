@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: labralords-api
+  namespace: production
+spec:
+  dnsNames:
+    - api.labralords.com
+  secretName: labralords-tls-api
+  issuerRef:
+    kind: ClusterIssuer
+    name: cloudflare

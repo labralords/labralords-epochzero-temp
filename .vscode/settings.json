@@ -1,0 +1,12 @@
+{
+  "eslint.workingDirectories": ["packages/*", "services/*"],
+  "eslint.validate": ["packages/*", "services/*"],
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "todohighlight.keywords": ["TODO:", "FIXME:", "NOTE:", "HACK:", "XXX:"],
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-workflow.json": ".github/workflows/**/*.yml"
+  }
+}

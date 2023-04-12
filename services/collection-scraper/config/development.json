@@ -1,0 +1,13 @@
+{
+  "db": {
+    "host": "localhost",
+    "port": 5555,
+    "username": "labralords-api",
+    "database": "labralords",
+    "password": "labralords"
+  },
+  "http": {
+    "port": 4002
+  },
+  "cors": ["http://localhost:5174"]
+}

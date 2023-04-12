@@ -1,0 +1,27 @@
+ignores:
+  - tslib
+  - tailwindcss
+  - "@labralords/common"
+  - "@types/jest"
+  - "@types/node"
+  - "@fortawesome/free-brands-svg-icons"
+  - date-fns
+  - echarts
+  - "@tsconfig/svelte"
+  - autoprefixer
+  - flowbite
+  - flowbite-svelte
+  - svelte-heros
+  - "@fortawesome/free-solid-svg-icons"
+  - buffer
+  - events
+  - process
+  - svelte-apollo
+  - svelte-i18n
+  - util
+  - web3
+  - browserify-zlib
+  - stream-browserify
+  - svelte-navigator
+  - uuid
+  - "@types/uuid"

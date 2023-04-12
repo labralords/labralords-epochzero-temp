@@ -1,0 +1,26 @@
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+  - ../../base
+
+namespace: production
+
+images:
+  - name: labralords.azurecr.io/labralords-client
+    newTag: latest
+
+configMapGenerator:
+  - literals:
+      - NODE_ENV="production"
+    name: labralords-client-configmap
+    namespace: production
+
+patches:
+  - patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 2
+    target:
+      kind: Deployment

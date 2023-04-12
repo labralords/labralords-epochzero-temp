@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: production
+  name: labralords-trade-scraper
+  labels:
+    app: labralords-trade-scraper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: labralords-trade-scraper
+  template:
+    metadata:
+      labels:
+        app: labralords-trade-scraper
+    spec:
+      containers:
+      - name: labralords-trade-scraper
+        image: labralords.azurecr.io/labralords-trade-scraper:v1.0.0-alpha
+        imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: labralords-trade-scraper-configmap
+          - secretRef:
+              name: database-secret
+        ports:
+        - containerPort: 3000
+        readinessProbe:
+          tcpSocket:
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 1
+          successThreshold: 1
+          failureThreshold: 3
+        resources:
+          requests:
+            cpu: 150m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 1024Mi
+        securityContext:
+          capabilities:
+            drop:
+              - all
+            add: [ "NET_ADMIN" ]
+          runAsUser: 10001
+          runAsGroup: 10001
+          readOnlyRootFilesystem: true
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      automountServiceAccountToken: false
+      restartPolicy: Always
+      shareProcessNamespace: false
+      terminationGracePeriodSeconds: 30
+  progressDeadlineSeconds: 600
+  revisionHistoryLimit: 10
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate

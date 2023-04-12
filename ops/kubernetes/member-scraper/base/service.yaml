@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: production
+  name: labralords-member-scraper-service
+spec:
+  selector:
+    app: labralords-member-scraper
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: ClusterIP

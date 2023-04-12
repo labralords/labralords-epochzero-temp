@@ -1,0 +1,21 @@
+{
+  "extends": "../../baseconfigs/tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "src",
+    "baseUrl": "src"
+  },
+  "include": ["./src"],
+  "exclude": ["./dist"],
+  "references": [
+    {
+      "path": "../../packages/common"
+    },
+    {
+      "path": "../../packages/database"
+    },
+    {
+      "path": "../../packages/thirdparty"
+    }
+  ]
+}

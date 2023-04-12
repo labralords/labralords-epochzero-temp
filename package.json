@@ -1,0 +1,53 @@
+{
+  "name": "@labralords/labralords",
+  "version": "1.0.0",
+  "description": "NFT statistics provider",
+  "scripts": {
+    "pnpm-context": "bin/pnpm-context.mjs",
+    "list-services": "echo [$(pnpm -s m ls --depth -1 | grep \"services\" | tr \" \" \"\n\" | grep -o \".*@\" | sed -e \"s/^@labralords\\///\" | rev | cut -c 2- | rev | sed -e 's/\\(.*\\)/\"\\1\"/' | paste -sd, - )]",
+    "depcheck": "pnpm -r --if-present run depcheck",
+    "compile": "pnpm -r --if-present run compile",
+    "dev": "pnpm -r --if-present --parallel dev",
+    "lint": "pnpm -r --if-present --parallel lint",
+    "format": "pnpm -r --if-present --parallel format",
+    "format-check": "pnpm -r --if-present --parallel format-check",
+    "clean": "pnpm -r --if-present --parallel clean",
+    "test": "pnpm -r --if-present --parallel test"
+  },
+  "engines": {
+    "node": "^16",
+    "pnpm": "^7"
+  },
+  "release": {
+    "branches": [
+      "master"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/npm",
+        {
+          "npmPublish": false
+        }
+      ],
+      "@semantic-release/github"
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.0.1",
+    "@commitlint/config-conventional": "^17.0.2",
+    "@pnpm/filter-workspace-packages": "^5.0.2",
+    "@pnpm/logger": "^4.0.0",
+    "globby": "^13.1.1",
+    "meow": "^10.1.2",
+    "mississippi": "^4.0.0",
+    "rimraf": "^3.0.2",
+    "semantic-release": "^19.0.2",
+    "snyk": "^1.914.0",
+    "tar": "^6.1.11"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

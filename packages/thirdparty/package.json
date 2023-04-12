@@ -1,0 +1,56 @@
+{
+  "name": "@labralords/thirdparty",
+  "version": "0.0.1",
+  "typedocMain": "src/index.ts",
+  "main": "dist/src/index.js",
+  "files": [
+    "dist/src/**/*"
+  ],
+  "types": "dist/src/index.d.ts",
+  "scripts": {
+    "clean": "rimraf dist tsconfig.tsbuildinfo",
+    "compile": "tsc --build",
+    "release": "pnpm clean && pnpm compile",
+    "format": "prettier '**/*.{js,ts,cjs}' --write --ignore-path ../../.gitignore",
+    "format-check": "prettier --list-different '**/*.{js,ts,cjs}' --ignore-path ../../.gitignore",
+    "lint": "eslint . --ext js,ts,cjs --config .eslintrc.cjs --ignore-path ../../.gitignore",
+    "lint-fix": "pnpm lint -- --fix",
+    "test": "jest",
+    "depcheck": "depcheck ."
+  },
+  "dependencies": {
+    "@labralords/common": "workspace:*",
+    "@labralords/database": "workspace:*",
+    "config": "^3.3.7",
+    "firebase": "^9.10.0",
+    "got": "^11.0.0",
+    "lodash": "^4.17.21",
+    "postgres": "^3.2.4",
+    "soonaverse": "^0.1.14",
+    "uuid": "^8.3.2"
+  },
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/config": "^3.3.0",
+    "@types/jest": "^28.1.6",
+    "@types/lodash": "^4.14.182",
+    "@types/node": "^17.0.25",
+    "@types/uuid": "^8.3.4",
+    "@typescript-eslint/eslint-plugin": "^5.27.1",
+    "@typescript-eslint/parser": "^5.27.1",
+    "depcheck": "^1.4.3",
+    "eslint": "^8.17.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-typescript": "^2.7.1",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-security": "^1.5.0",
+    "eslint-plugin-unicorn": "^42.0.0",
+    "jest": "^28.1.1",
+    "prettier": "^2.6.2",
+    "ts-jest": "^29.0.1",
+    "typescript": "^4.7.3"
+  }
+}

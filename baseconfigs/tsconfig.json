@@ -1,0 +1,21 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": "..",
+    "outDir": "dist",
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "moduleResolution": "node",
+    "jsx": "react",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "importHelpers": false,
+    "target": "es2015",
+    "module": "CommonJS",
+    "lib": ["ES2018", "DOM"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true
+  }
+}

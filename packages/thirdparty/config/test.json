@@ -1,0 +1,18 @@
+{
+  "db": {
+    "host": "localhost",
+    "port": 5432,
+    "username": "",
+    "database": "",
+    "password": "",
+    "ssl": false
+  },
+  "logger": {
+    "level": "info"
+  },
+  "http": {
+    "host": "0.0.0.0",
+    "port": 3000
+  },
+  "cors": []
+}

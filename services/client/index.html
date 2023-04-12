@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" class="dark h-full min-h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--theme colors -->
+    <meta name="theme-color" content="" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <title>Labralords.</title>
+    <meta
+      name="description"
+      content="A platform that provides insights so you can make smarter trades of NFTs on the IOTA tangle"
+    />
+    <meta name="keywords" content="NFTs, IOTA, tangle, insights, soonaverse, shimmer" />
+
+    <!--OpenGraph meta -->
+    <meta
+      property="og:description"
+      content="A platform that provides insights so you can make smarter trades of NFTs on the IOTA tangle"
+    />
+    <meta property="og:title" content="Labralords." />
+    <meta property="og:image" content="https://labralords.com/logo.png" />
+    <meta property="og:url" content="https://labralords.com" />
+    <meta property="og:type" content="website" />
+
+    <!--meta for twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@labralords" />
+    <meta name="twitter:title" content="Labralords." />
+    <meta name="twitter:site" content="@labralords" />
+    <meta
+      name="twitter:description"
+      content="A platform that provides insights so you can make smarter trades of NFTs on the IOTA tangle"
+    />
+
+    <!--Favicon-->
+    <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Twitter universal website tag code -->
+    <script>
+      !(function (e, t, n, s, u, a) {
+        e.twq ||
+          ((s = e.twq =
+            function () {
+              s.exe ? s.exe.apply(s, arguments) : s.queue.push(arguments);
+            }),
+          (s.version = '1.1'),
+          (s.queue = []),
+          (u = t.createElement(n)),
+          (u.async = !0),
+          (u.src = '//static.ads-twitter.com/uwt.js'),
+          (a = t.getElementsByTagName(n)[0]),
+          a.parentNode.insertBefore(u, a));
+      })(window, document, 'script');
+      // Insert Twitter Pixel ID and Standard Event data below
+      twq('init', 'o9nn8');
+      twq('track', 'PageView');
+    </script>
+    <!-- End Twitter universal website tag code -->
+    <script>
+      window.global = window;
+    </script>
+    <script type="module">
+      import process from 'process';
+      import { Buffer } from 'buffer';
+      import EventEmitter from 'events';
+      window.Buffer = Buffer;
+      window.process = process;
+      window.EventEmitter = EventEmitter;
+    </script>
+  </head>
+  <body class="h-full min-h-full dark:bg-black font-sans font-normal leading-relaxed dark:text-gray-100 font-base">
+    <div id="app" class="h-full min-h-full"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

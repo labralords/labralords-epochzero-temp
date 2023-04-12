@@ -1,0 +1,129 @@
+name: "Build, deploy docker image to K8s cluster"
+description: "Build, push, deploy docker image to k8s cluster"
+
+inputs:
+  deployment:
+    description: 'Typically the repo name but not required to be, used as the stem for both the Docker image name and Kubernetes deployment'
+    required: true
+  namespace:
+    description: 'Namespace within the Kubernetes cluster'
+    required: true
+    default: 'development'
+  registry:
+    description: 'Azure ACR'
+    required: true
+  registry_short_name:
+    description: 'Azure ACR'
+    required: true
+  k8s-cluster:
+    description: 'K8S cluster'
+    required: true
+  resource-group:
+    description: 'Resource group'
+    required: true
+  subscription:
+    description: 'Azure subscription'
+    required: true
+  subscription-id:
+    description: 'Azure subscription ID'
+    required: true
+  tenant-id:
+    description: 'Azure tenant ID'
+    required: true
+  registry-password:
+    description: 'DOCKER_REGISTRY_PASSWORD'
+    required: true
+  registry-username:
+    description: 'DOCKER_REGISTRY_USERNAME'
+    required: true
+  overlays:
+    description: 'Kustomize overlays environment'
+    required: true
+  sha:
+    description: 'Github commit SHA'
+    required: true
+  node_version:
+    description: 'Node version'
+    required: true
+  pnpm_version:
+    description: 'PNPM version'
+    required: true
+  npm_token:
+    description: 'npm token'
+    required: true
+  db_password:
+    description: 'npm token'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Build docker image
+      run: |
+        DOCKER_BUILDKIT=1 pnpm run --filter $deployment docker:build --build-arg PNPM_VERSION=$pnpm_version --build-arg NODE_VERSION=$node_version --build-arg NPM_TOKEN=$npm_token -t labralords-$deployment
+        docker tag labralords-$deployment $registry/labralords-$deployment:$sha
+        docker tag labralords-$deployment $registry/labralords-$deployment:latest
+      shell: bash
+      env:
+        deployment: ${{ inputs.deployment }}
+        registry: ${{ inputs.registry }}
+        node_version: ${{ inputs.node_version }}
+        pnpm_version: ${{ inputs.pnpm_version }}
+        npm_token: ${{ inputs.npm_token }}
+        sha: ${{ inputs.sha }}
+
+    - name: Check docker image
+      run: |
+        docker run -d -p 3000:3000 labralords-$deployment
+        timeout 20 bash -c 'while [[ "$(curl -L -s -o /dev/null -w ''%{http_code}'' localhost:3000/healthz)" != "200" ]]; do sleep 1; done' || false
+        docker rm -f $(docker ps -q --filter ancestor=labralords-$deployment)
+      shell: bash
+      env:
+        deployment: ${{ inputs.deployment }}
+
+    - name: Login to Azure
+      uses: Azure/login@v1.1
+      with:
+        creds: '{"clientId":"${{ inputs.registry-username }}","clientSecret":"${{ inputs.registry-password }}","subscriptionId":"${{ inputs.subscription-id }}","tenantId":"${{ inputs.tenant-id }}"}'
+
+    - name: Login to ACR
+      run: |
+        az acr login --name $registry_short_name
+      shell: bash
+      env:
+        registry_short_name: ${{ inputs.registry_short_name }}
+
+    - name: Push container to ACR
+      run: |
+        docker push $registry/labralords-$deployment:$sha
+        docker push $registry/labralords-$deployment:latest
+      shell: bash
+      env:
+        registry: ${{ inputs.registry }}
+        deployment: ${{ inputs.deployment }}
+        sha: ${{ inputs.sha }}
+
+    - name: Login AKS
+      run: |
+        az aks get-credentials --admin --name ${{ inputs.k8s-cluster }} --resource-group ${{ inputs.resource-group }} --subscription "${{ inputs.subscription }}"
+      shell: bash
+
+    - name: Deploy to Kubernetes cluster
+      run: |
+        DIR="./ops/kubernetes/$app/overlays/$overlays"
+        if [ -d "$DIR" ];
+        then
+          if [ "$app" == "api" ] || [ "$app" == "listing-scraper" ] || [ "$app" == "member-scraper" ] || [ "$app" == "trade-scraper" ] || [ "$app" == "collection-scraper" ] || [ "$app" == "metadata-scraper" ] || [ "$app" == "access-scraper" ] || [ "$app" == "notifications" ]; then
+            echo DB_PASSWORD=$db_password >> "$DIR/database-secret.env"
+          fi
+          cd "$DIR"
+          kustomize edit set image $registry/labralords-$app:$sha
+          kubectl apply -k .
+        fi
+      shell: bash
+      env:
+        app: ${{ inputs.deployment }}
+        sha: ${{ inputs.sha }}
+        overlays: ${{ inputs.overlays }}
+        registry: ${{ inputs.registry }}
+        db_password: ${{ inputs.db_password }}

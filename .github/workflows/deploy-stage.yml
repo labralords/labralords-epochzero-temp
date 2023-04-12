@@ -1,0 +1,115 @@
+# on:
+#   push:
+#     branches:
+#       - develop
+
+# env:
+#   node-version: 16
+#   pnpm-version: 7
+#   registry: labralords.azurecr.io
+#   registry_short_name: labralords
+#   namespace: stage
+#   k8s-cluster: labralords-production
+#   resource-group: labralords-production
+#   subscription: Azure subscription 1
+#   subscription-id: c3f388e4-6e62-4dc8-b57f-225c974dcf33
+#   tenant-id: ca3799cd-b762-4ad4-b1ee-b96ba10f03ca
+#   overlays: 'stage'
+
+# name: Deploy services to Stage
+# jobs:
+#   matrix_prep:
+#     runs-on: ubuntu-latest
+#     outputs:
+#       matrix: ${{ steps.set-matrix.outputs.matrix }}
+#     steps:
+#       - uses: actions/checkout@v2
+
+#       - uses: pnpm/action-setup@v2
+#         with:
+#           version: ${{ env.pnpm-version }}
+
+#       - run: pnpm -s list-services
+
+#       - id: set-matrix
+#         run: echo "::set-output name=matrix::{\"workspace\":$(pnpm -s list-services)}"
+
+#   build:
+#     needs: matrix_prep
+#     runs-on: ubuntu-latest
+#     strategy:
+#       matrix: ${{ fromJson(needs.matrix_prep.outputs.matrix) }}
+
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v2
+#         with:
+#           fetch-depth: 0
+
+#       - uses: dorny/paths-filter@v2
+#         id: changes
+#         with:
+#           base: 'master'
+#           filters: |
+#             has_change:
+#               - 'services/${{ matrix.workspace }}/**'
+#               - 'packages/**'
+#               - 'manifests/**'
+#               - 'ops/kubernetes/${{ matrix.workspace }}/**'
+
+#       - name: Install pnpm
+#         if: steps.changes.outputs.has_change == 'true'
+#         uses: pnpm/action-setup@v2.0.1
+#         with:
+#           version: ${{ env.pnpm-version }}
+
+#       - uses: actions/setup-node@v2
+#         if: steps.changes.outputs.has_change == 'true'
+#         with:
+#           node-version: ${{ env.node-version }}
+#           cache: pnpm
+
+#       - name: Install dependencies
+#         if: steps.changes.outputs.has_change == 'true'
+#         run: pnpm install
+#         env:
+#           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+#       - name: Set github short sha
+#         if: steps.changes.outputs.has_change == 'true'
+#         id: short_sha
+#         run: echo "::set-output name=short_sha::${{ env.overlays }}-$(git rev-parse --short HEAD)"
+
+#       - name: Output short sha
+#         if: steps.changes.outputs.has_change == 'true'
+#         run: echo ${{ steps.short_sha.outputs.short_sha }}
+
+#       - name: Run semantic-release
+#         if: steps.changes.outputs.has_change == 'true'
+#         id: semantic
+#         run: npx semantic-release
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+#           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+#       - name: Build and deploy POD image
+#         if: steps.changes.outputs.has_change == 'true'
+#         uses: ./.github/actions/deploy-pod-image
+#         with:
+#           deployment: ${{ matrix.workspace }}
+#           namespace: ${{ env.namespace }}
+#           registry: ${{ env.registry }}
+#           registry_short_name: ${{ env.registry_short_name }}
+#           k8s-cluster: ${{ env.k8s-cluster }}
+#           resource-group: ${{ env.resource-group }}
+#           subscription: ${{ env.subscription }}
+#           subscription-id: ${{ env.subscription-id }}
+#           tenant-id: ${{ env.tenant-id }}
+#           registry-username: ${{ secrets.ACR_USERNAME }}
+#           registry-password: ${{ secrets.ACR_PASSWORD }}
+#           overlays: ${{ env.overlays }}
+#           sha: ${{ steps.short_sha.outputs.short_sha }}
+#           node_version: ${{ env.node-version }}
+#           pnpm_version: ${{ env.pnpm-version }}
+#           npm_token: ${{ secrets.NPM_TOKEN }}
+#           db_password: ${{ secrets.DB_PASSWORD_PRODUCTION }}

@@ -1,0 +1,24 @@
+version: '3.7'
+services:
+  labralords-db:
+    image: timescale/timescaledb:2.4.1-pg13
+    restart: always
+    environment:
+      - POSTGRES_USER=labralords-api
+      - POSTGRES_PASSWORD=labralords
+      - POSTGRES_DB=labralords
+    logging:
+      options:
+        max-size: 10m
+        max-file: '3'
+    ports:
+      - '5555:5432'
+    volumes:
+      - ./collection-data.csv:/collection-data.csv
+      - ./nft-data.csv:/nft-data.csv
+      - ./listing-data.csv:/listing-data.csv
+      - ./trait-category-data.csv:/trait-category-data.csv
+      - ./trait-data.csv:/trait-data.csv
+      - ./nft-has-trait-data.csv:/nft-has-trait-data.csv
+      - ./tables.sql:/docker-entrypoint-initdb.d/1-tables.sql
+      - ./seed.sql:/docker-entrypoint-initdb.d/2-seed.sql

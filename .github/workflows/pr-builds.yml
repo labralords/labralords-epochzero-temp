@@ -1,0 +1,86 @@
+on:
+  # push:
+  #   branches:
+  #     - main
+  #     - develop
+
+  pull_request:
+    {}
+
+env:
+  node-version: 16
+  pnpm-version: 7
+
+name: Run Tests
+jobs:
+  matrix_prep:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.pnpm-version }}
+
+      - run: pnpm -s list-services
+
+      - id: set-matrix
+        run: echo "::set-output name=matrix::{\"workspace\":$(pnpm -s list-services)}"
+
+  test:
+    needs: matrix_prep
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{fromJson(needs.matrix_prep.outputs.matrix)}}
+
+    steps:
+      - uses: actions/checkout@master
+
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            has_change:
+              - '**/${{ matrix.workspace }}/**'
+              - 'packages/**'
+              - 'thirdparty/**'
+
+      - name: Install pnpm
+        if: steps.changes.outputs.has_change == 'true'
+        uses: pnpm/action-setup@v2.0.1
+        with:
+          version: ${{ env.pnpm-version }}
+
+      - uses: actions/setup-node@v2
+        if: steps.changes.outputs.has_change == 'true'
+        with:
+          node-version: ${{ env.node-version }}
+          cache: pnpm
+
+      - name: Install dependencies
+        if: steps.changes.outputs.has_change == 'true'
+        run: pnpm install
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Depcheck
+        if: steps.changes.outputs.has_change == 'true'
+        run: pnpm run --filter ${{ matrix.workspace }} depcheck
+
+      - name: Compile
+        if: steps.changes.outputs.has_change == 'true'
+        run: pnpm run --filter ${{ matrix.workspace }} compile
+
+      - name: Check formatting
+        if: steps.changes.outputs.has_change == 'true'
+        run: pnpm run --filter ${{ matrix.workspace }} format-check
+
+      - name: Linting
+        if: steps.changes.outputs.has_change == 'true'
+        run: pnpm run --filter ${{ matrix.workspace }} lint
+
+      - name: Run tests
+        if: steps.changes.outputs.has_change == 'true'
+        run: pnpm run --filter ${{ matrix.workspace }} test

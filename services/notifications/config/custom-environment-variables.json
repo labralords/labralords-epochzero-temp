@@ -1,0 +1,17 @@
+{
+  "db": {
+    "host": "DB_HOST",
+    "port": "DB_PORT",
+    "username": "DB_USERNAME",
+    "database": "DB_DATABASE",
+    "password": "DB_PASSWORD",
+    "ssl": "DB_SSL"
+  },
+  "logger": {
+    "level": "LOG_LEVEL"
+  },
+  "http": {
+    "host": "HTTP_HOST",
+    "port": "HTTP_PORT"
+  }
+}

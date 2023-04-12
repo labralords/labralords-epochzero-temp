@@ -1,0 +1,11 @@
+{
+  "db": {
+    "host": "labralords-production.postgres.database.azure.com",
+    "port": 5432,
+    "username": "labralords-api",
+    "database": "labralords",
+    "ssl": "require"
+  },
+  "cors": ["http://localhost:5173", "https://labralords.com", "https://www.labralords.com"],
+  "domain": ".labralords.com"
+}
