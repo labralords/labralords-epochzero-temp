@@ -5,5 +5,8 @@
     "username": "labralords-api",
     "database": "labralords",
     "ssl": "require"
+  },
+  "http": {
+    "port": 3000
   }
 }
