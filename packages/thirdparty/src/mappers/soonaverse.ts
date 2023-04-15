@@ -88,8 +88,8 @@ export const mapMember = (member: Member): UserDatabaseEntry => {
     iota_address: member.validatedAddress?.iota || null,
     smr_address: member.validatedAddress?.smr || null,
     source: 'soonaverse',
-    created_at: fromFirestoreDate(member.createdOn).toISOString(),
-    updated_at: fromFirestoreDate(member.updatedOn).toISOString(),
+    created_at: member.createdOn ? fromFirestoreDate(member.createdOn).toISOString() : null,
+    updated_at: member.updatedOn ? fromFirestoreDate(member.updatedOn).toISOString() : null,
   };
 };
 
