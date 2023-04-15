@@ -119,9 +119,6 @@ export class SoonaverseRepository implements Repository {
       throw new Error(`Collection ${collectionId} not found`);
     }
     const mappedCollection = mapCollection(collection);
-    if (!mappedCollection.owner_address) {
-      throw new Error(`Collection ${collectionId} has no owner`);
-    }
     await nftCollection.upsertNftCollectionBatch([mappedCollection]);
     return mappedCollection;
   }
@@ -182,7 +179,7 @@ export class SoonaverseRepository implements Repository {
       const { cursor: nextCursor, items } = await this.fetchCollectionsPage(cursor);
       if (items.length > 0) {
         console.log('upserting collections', items.length);
-        await nftCollection.upsertNftCollectionBatch(items.filter((c) => !!c.owner_address));
+        await nftCollection.upsertNftCollectionBatch(items);
       }
       const count = items?.length;
       lastFetchCount = count;
@@ -327,6 +324,11 @@ export class SoonaverseRepository implements Repository {
               }
 
               const collectionIdMap = await nftCollection.getCollectionIdMap([sourceCollectionId]);
+              if (!collectionIdMap[sourceCollectionId]) {
+                console.log('no collection id for collection', sourceCollectionId);
+                // eslint-disable-next-line no-continue
+                continue;
+              }
               await nftDatabase.upsertNftBatch([
                 createUnknownNft({
                   network: trade.network,

@@ -36,7 +36,7 @@ export const mapCollection = (collection: Collection): NftCollectionDatabaseEntr
     royalties_fee: collection.royaltiesFee || 0,
     twitter_username: collection.twitter,
     discord_username: collection.discord,
-    owner_address: collection.createdBy,
+    owner_address: collection.createdBy || null,
     collection_content_updated_at: null,
     rejected: collection.rejected,
     created_at: fromFirestoreDate(collection.createdOn).toISOString(),
