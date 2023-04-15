@@ -179,7 +179,7 @@ export class SoonaverseRepository implements Repository {
       const { cursor: nextCursor, items } = await this.fetchCollectionsPage(cursor);
       if (items.length > 0) {
         console.log('upserting collections', items.length);
-        await nftCollection.upsertNftCollectionBatch(items);
+        await nftCollection.upsertNftCollectionBatch(items.filter((c) => !!c.owner_address));
       }
       const count = items?.length;
       lastFetchCount = count;
