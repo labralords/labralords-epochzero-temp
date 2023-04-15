@@ -1,10 +1,10 @@
 {
   "db": {
     "host": "localhost",
-    "port": 5432,
+    "port": 5555,
     "username": "labralords-api",
     "database": "labralords",
-    "ssl": "require"
+    "password": "labralords"
   },
   "http": {
     "port": 3000

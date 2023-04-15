@@ -119,6 +119,9 @@ export class SoonaverseRepository implements Repository {
       throw new Error(`Collection ${collectionId} not found`);
     }
     const mappedCollection = mapCollection(collection);
+    if (!mappedCollection.owner_address) {
+      throw new Error(`Collection ${collectionId} has no owner`);
+    }
     await nftCollection.upsertNftCollectionBatch([mappedCollection]);
     return mappedCollection;
   }
