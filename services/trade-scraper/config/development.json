@@ -7,7 +7,7 @@
     "password": "labralords"
   },
   "http": {
-    "port": 4001
+    "port": 4007
   },
   "cors": ["http://localhost:5174"]
 }

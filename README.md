@@ -1,11 +1,31 @@
 # Labralords
 
+## Get started
+
+Prerequisites:
+
+* node >= 16.x
+* pnpm >= 7.x
+* docker
+
+Start by installing node modules (run in project root dir):
+
 ```sh
 pnpm i
 ```
 
+Start the database:
+
 ```sh
-pnpm --filter api --filter client dev
+pnpm dev:db
+```
+
+Start the services needed (each in its own terminal window):
+
+```sh
+pnpm dev:api
+pnpm dev:client
+pnpm dev:scrapers
 ```
 
 ## Donations

@@ -1,9 +1,12 @@
 {
   "db": {
-    "host": "labralords-production.postgres.database.azure.com",
-    "port": 5432,
+    "host": "localhost",
+    "port": 5555,
     "username": "labralords-api",
     "database": "labralords",
-    "ssl": "require"
+    "password": "labralords"
+  },
+  "http": {
+    "port": 3000
   }
 }

@@ -12,7 +12,11 @@
     "format": "pnpm -r --if-present --parallel format",
     "format-check": "pnpm -r --if-present --parallel format-check",
     "clean": "pnpm -r --if-present --parallel clean",
-    "test": "pnpm -r --if-present --parallel test"
+    "test": "pnpm -r --if-present --parallel test",
+    "dev:client": "pnpm --filter client dev",
+    "dev:api": "pnpm --filter api dev",
+    "dev:db": "pnpm --filter database-helpers dev",
+    "dev:scrapers": "pnpm --filter *-scraper -r --if-present --parallel dev"
   },
   "engines": {
     "node": "^16",

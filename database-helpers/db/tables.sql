@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS collections (
   "available_from" timestamp with time zone NOT NULL,
   "twitter_username" text,
   "discord_username" text,
-  "owner_address" text NOT NULL,
+  "owner_address" text,
   "rejected" BOOLEAN NOT NULL DEFAULT FALSE,
   "collection_content_updated_at" timestamp with time zone DEFAULT NOW(),
   "created_at" timestamp with time zone NOT NULL,

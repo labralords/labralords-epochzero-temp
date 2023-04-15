@@ -324,6 +324,11 @@ export class SoonaverseRepository implements Repository {
               }
 
               const collectionIdMap = await nftCollection.getCollectionIdMap([sourceCollectionId]);
+              if (!collectionIdMap[sourceCollectionId]) {
+                console.log('no collection id for collection', sourceCollectionId);
+                // eslint-disable-next-line no-continue
+                continue;
+              }
               await nftDatabase.upsertNftBatch([
                 createUnknownNft({
                   network: trade.network,

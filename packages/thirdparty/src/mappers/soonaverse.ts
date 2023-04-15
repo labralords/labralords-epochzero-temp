@@ -36,7 +36,7 @@ export const mapCollection = (collection: Collection): NftCollectionDatabaseEntr
     royalties_fee: collection.royaltiesFee || 0,
     twitter_username: collection.twitter,
     discord_username: collection.discord,
-    owner_address: collection.createdBy,
+    owner_address: collection.createdBy || null,
     collection_content_updated_at: null,
     rejected: collection.rejected,
     created_at: fromFirestoreDate(collection.createdOn).toISOString(),
@@ -88,8 +88,8 @@ export const mapMember = (member: Member): UserDatabaseEntry => {
     iota_address: member.validatedAddress?.iota || null,
     smr_address: member.validatedAddress?.smr || null,
     source: 'soonaverse',
-    created_at: fromFirestoreDate(member.createdOn).toISOString(),
-    updated_at: fromFirestoreDate(member.updatedOn).toISOString(),
+    created_at: member.createdOn ? fromFirestoreDate(member.createdOn).toISOString() : null,
+    updated_at: member.updatedOn ? fromFirestoreDate(member.updatedOn).toISOString() : null,
   };
 };
 

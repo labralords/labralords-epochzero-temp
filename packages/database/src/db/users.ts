@@ -73,8 +73,16 @@ export const updateAccess = async (ethAddresses: string[]): Promise<UserDatabase
     uniqueAddresses.map((ethAddress) => ({
       access: true,
       eth_address: ethAddress?.toLowerCase(),
+      smr_address: null,
       iota_address: null,
       username: null,
+      about: null,
+      twitter: null,
+      discord: null,
+      github: null,
+      created_at: null,
+      updated_at: null,
+      source: 'soonaverse',
     })) as UserDatabaseEntry[],
     ...upsertColumns,
   )}
