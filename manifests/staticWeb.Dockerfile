@@ -28,6 +28,9 @@ RUN pnpm run --if-present --filter "{${PACKAGE_PATH}}^..." build
 COPY ./pkg .
 
 FROM dev AS devAssets
+RUN pnpm run --filter "{${PACKAGE_PATH}}" build:dev
+
+FROM dev AS stageAssets
 RUN pnpm run --filter "{${PACKAGE_PATH}}" build:stage
 
 FROM dev AS prodAssets
@@ -44,8 +47,8 @@ EXPOSE 3000
 
 WORKDIR /app
 
-COPY --from=devAssets /app/monorepo/${PACKAGE_PATH}/dist /usr/share/nginx/html/stage
 COPY --from=devAssets /app/monorepo/${PACKAGE_PATH}/dist /usr/share/nginx/html/development
+COPY --from=stageAssets /app/monorepo/${PACKAGE_PATH}/dist /usr/share/nginx/html/stage
 COPY --from=prodAssets /app/monorepo/${PACKAGE_PATH}/dist /usr/share/nginx/html/production
 COPY --from=dev /app/monorepo/${PACKAGE_PATH}/config/nginx.conf /etc/nginx/templates/nginx.conf.template
 
