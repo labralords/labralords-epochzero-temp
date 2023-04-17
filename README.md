@@ -5,7 +5,7 @@
 Prerequisites:
 
 * node >= 16.x
-* pnpm >= 7.x
+* pnpm >= 8.x
 * docker
 
 Start by installing node modules (run in project root dir):
@@ -26,6 +26,16 @@ Start the services needed (each in its own terminal window):
 pnpm dev:api
 pnpm dev:client
 pnpm dev:scrapers
+```
+
+## Run using docker
+
+```sh
+docker-compose -f docker-compose.dev.yaml up
+
+or
+
+pnpm docker
 ```
 
 ## Donations

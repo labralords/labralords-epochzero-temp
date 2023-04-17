@@ -1,0 +1,170 @@
+version: "3.9"
+services:
+  labralords-db:
+    image: timescale/timescaledb:2.4.1-pg13
+    restart: always
+    environment:
+      - POSTGRES_USER=labralords-api
+      - POSTGRES_PASSWORD=labralords
+      - POSTGRES_DB=labralords
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./database-helpers/db/tables.sql:/docker-entrypoint-initdb.d/1-tables.sql
+    networks:
+      - backend
+    deploy:
+      placement:
+        max_replicas_per_node: 1
+
+  labralords-api:
+    image: labralords/labralords-api:latest
+    platform: linux/amd64
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=labralords-db
+      - DB_PORT=5432
+    ports:
+      - "3000:3000"
+    networks:
+      - backend
+    depends_on:
+      - labralords-db
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  labralords-client:
+    image: labralords/labralords-client:latest
+    platform: linux/amd64
+    environment:
+      - NODE_ENV=development
+    ports:
+      - "80:3000"
+    networks:
+      - frontend
+    depends_on:
+      - labralords-api
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  labralords-access-scraper:
+    image: labralords/labralords-access-scraper:latest
+    platform: linux/amd64
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=labralords-db
+      - DB_PORT=5432
+    networks:
+      - backend
+    depends_on:
+      - labralords-db
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  labralords-collection-scraper:
+    image: labralords/labralords-collection-scraper:latest
+    platform: linux/amd64
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=labralords-db
+      - DB_PORT=5432
+    networks:
+      - backend
+    depends_on:
+      - labralords-db
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  labralords-listing-scraper:
+    image: labralords/labralords-listing-scraper:latest
+    platform: linux/amd64
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=labralords-db
+      - DB_PORT=5432
+    networks:
+      - backend
+    depends_on:
+      - labralords-db
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  labralords-member-scraper:
+    image: labralords/labralords-member-scraper:latest
+    platform: linux/amd64
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=labralords-db
+      - DB_PORT=5432
+    networks:
+      - backend
+    depends_on:
+      - labralords-db
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  labralords-metadata-scraper:
+    image: labralords/labralords-metadata-scraper:latest
+    platform: linux/amd64
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=labralords-db
+      - DB_PORT=5432
+    networks:
+      - backend
+    depends_on:
+      - labralords-db
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  labralords-trade-scraper:
+    image: labralords/labralords-trade-scraper:latest
+    platform: linux/amd64
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=labralords-db
+      - DB_PORT=5432
+    networks:
+      - backend
+    depends_on:
+      - labralords-db
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  labralords-notifications:
+    image: labralords/labralords-notifications:latest
+    platform: linux/amd64
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=labralords-db
+      - DB_PORT=5432
+    networks:
+      - backend
+    depends_on:
+      - labralords-db
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+networks:
+  frontend:
+  backend:
+
+volumes:
+  db-data:

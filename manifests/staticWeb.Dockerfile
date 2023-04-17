@@ -45,6 +45,7 @@ EXPOSE 3000
 WORKDIR /app
 
 COPY --from=devAssets /app/monorepo/${PACKAGE_PATH}/dist /usr/share/nginx/html/stage
+COPY --from=devAssets /app/monorepo/${PACKAGE_PATH}/dist /usr/share/nginx/html/development
 COPY --from=prodAssets /app/monorepo/${PACKAGE_PATH}/dist /usr/share/nginx/html/production
 COPY --from=dev /app/monorepo/${PACKAGE_PATH}/config/nginx.conf /etc/nginx/templates/nginx.conf.template
 

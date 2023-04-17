@@ -16,7 +16,8 @@
     "dev:client": "pnpm --filter client dev",
     "dev:api": "pnpm --filter api dev",
     "dev:db": "pnpm --filter database-helpers dev",
-    "dev:scrapers": "pnpm --filter *-scraper -r --if-present --parallel dev"
+    "dev:scrapers": "pnpm --filter *-scraper -r --if-present --parallel dev",
+    "docker": "docker-compose -f docker-compose.dev.yaml up"
   },
   "engines": {
     "node": "^16",
