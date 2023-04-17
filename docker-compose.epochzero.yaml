@@ -4,6 +4,7 @@ services:
   lb:
     image: nginx
     platform: linux/amd64
+    restart: unless-stopped
     ports:
       - "80:80"
     volumes:
@@ -18,7 +19,7 @@ services:
 
   labralords-db:
     image: timescale/timescaledb:2.4.1-pg13
-    restart: always
+    restart: unless-stopped
     environment:
       - POSTGRES_USER=labralords-api
       - POSTGRES_PASSWORD=${DB_PASSWORD}
@@ -34,6 +35,7 @@ services:
 
   labralords-api:
     image: labralords/labralords-api:latest
+    restart: unless-stopped
     platform: linux/amd64
     environment:
       - NODE_ENV=production
@@ -52,6 +54,7 @@ services:
 
   labralords-client:
     image: labralords/labralords-client:latest
+    restart: unless-stopped
     platform: linux/amd64
     environment:
       - NODE_ENV=production
@@ -66,6 +69,7 @@ services:
 
   labralords-access-scraper:
     image: labralords/labralords-access-scraper:latest
+    restart: unless-stopped
     platform: linux/amd64
     environment:
       - NODE_ENV=production
@@ -84,6 +88,7 @@ services:
 
   labralords-collection-scraper:
     image: labralords/labralords-collection-scraper:latest
+    restart: unless-stopped
     platform: linux/amd64
     environment:
       - NODE_ENV=production
@@ -102,6 +107,7 @@ services:
 
   labralords-listing-scraper:
     image: labralords/labralords-listing-scraper:latest
+    restart: unless-stopped
     platform: linux/amd64
     environment:
       - NODE_ENV=production
@@ -120,6 +126,7 @@ services:
 
   labralords-member-scraper:
     image: labralords/labralords-member-scraper:latest
+    restart: unless-stopped
     platform: linux/amd64
     environment:
       - NODE_ENV=production
@@ -138,6 +145,7 @@ services:
 
   labralords-metadata-scraper:
     image: labralords/labralords-metadata-scraper:latest
+    restart: unless-stopped
     platform: linux/amd64
     environment:
       - NODE_ENV=production
@@ -156,6 +164,7 @@ services:
 
   labralords-trade-scraper:
     image: labralords/labralords-trade-scraper:latest
+    restart: unless-stopped
     platform: linux/amd64
     environment:
       - NODE_ENV=production
@@ -174,6 +183,7 @@ services:
 
   labralords-notifications:
     image: labralords/labralords-notifications:latest
+    restart: unless-stopped
     platform: linux/amd64
     environment:
       - NODE_ENV=production
