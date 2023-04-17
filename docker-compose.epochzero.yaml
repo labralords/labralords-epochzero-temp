@@ -1,5 +1,21 @@
 version: "3.9"
 services:
+
+  lb:
+    image: nginx
+    platform: linux/amd64
+    ports:
+      - "80:80"
+    volumes:
+      - ./epochzero-nginx.conf:/etc/nginx/templates/nginx.conf.template:ro
+    networks:
+      - frontend
+      - backend
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
   labralords-db:
     image: timescale/timescaledb:2.4.1-pg13
     restart: always
@@ -25,8 +41,6 @@ services:
       - DB_PORT=5432
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_SSL=prefer
-    ports:
-      - "3000:3000"
     networks:
       - backend
     depends_on:
@@ -41,8 +55,6 @@ services:
     platform: linux/amd64
     environment:
       - NODE_ENV=production
-    ports:
-      - "80:3000"
     networks:
       - frontend
     depends_on:
