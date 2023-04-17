@@ -7,5 +7,5 @@
     "ssl": "require"
   },
   "cors": ["http://localhost:5173", "https://labralords.com", "https://www.labralords.com", "https://vip.epochzero.io"],
-  "domain": ".epochzero.com"
+  "domain": ".epochzero.io"
 }
