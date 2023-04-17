@@ -9,7 +9,7 @@ on:
 
 env:
   node-version: 16
-  pnpm-version: 7
+  pnpm-version: 8
 
 name: Run Tests
 jobs:
