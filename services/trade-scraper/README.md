@@ -1,3 +1,1 @@
 # Trade scraper
-
-kukk
