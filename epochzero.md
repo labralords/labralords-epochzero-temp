@@ -2,6 +2,7 @@
 
 1. Uninstall apache server
 2. Install docker
+3. Install python3 and docker-compose
 3. Copy `docker-compose.epochzero.yaml` and `epochzero-nginx.conf` to VM
 4. Rename `docker-compose.epochzero.yaml` to `docker-compose.yaml`
 5. Create a `.env` file that contains `DB_PASSWORD` in the same folder
