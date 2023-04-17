@@ -1,0 +1,64 @@
+name: "Build and push image to docker hub"
+description: "Build and push image to docker hub"
+
+inputs:
+  deployment:
+    description: 'Typically the repo name'
+    required: true
+  registry-password:
+    description: 'DOCKER_REGISTRY_PASSWORD'
+    required: true
+  registry-username:
+    description: 'DOCKER_REGISTRY_USERNAME'
+    required: true
+  sha:
+    description: 'Github commit SHA'
+    required: true
+  node_version:
+    description: 'Node version'
+    required: true
+  pnpm_version:
+    description: 'PNPM version'
+    required: true
+  npm_token:
+    description: 'npm token'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Build docker image
+      run: |
+        DOCKER_BUILDKIT=1 pnpm run --filter $deployment docker:build --build-arg PNPM_VERSION=$pnpm_version --build-arg NODE_VERSION=$node_version --build-arg NPM_TOKEN=$npm_token -t labralords-$deployment
+        docker tag labralords-$deployment labralords/labralords-$deployment:$sha
+        docker tag labralords-$deployment labralords/labralords-$deployment:latest
+      shell: bash
+      env:
+        deployment: ${{ inputs.deployment }}
+        node_version: ${{ inputs.node_version }}
+        pnpm_version: ${{ inputs.pnpm_version }}
+        npm_token: ${{ inputs.npm_token }}
+        sha: ${{ inputs.sha }}
+
+    - name: Check docker image
+      run: |
+        docker run -d -p 3000:3000 labralords-$deployment
+        timeout 20 bash -c 'while [[ "$(curl -L -s -o /dev/null -w ''%{http_code}'' localhost:3000/healthz)" != "200" ]]; do sleep 1; done' || false
+        docker rm -f $(docker ps -q --filter ancestor=labralords-$deployment)
+      shell: bash
+      env:
+        deployment: ${{ inputs.deployment }}
+
+    - name: Login to Docker hub
+      run: |
+        docker login -u ${{ inputs.registry-username }} -p ${{ inputs.registry-password }}
+      shell: bash
+
+    - name: Push container to ACR
+      run: |
+        docker push labralords/labralords-$deployment:$sha
+        docker push labralords/labralords-$deployment:latest
+      shell: bash
+      env:
+        deployment: ${{ inputs.deployment }}
+        sha: ${{ inputs.sha }}
