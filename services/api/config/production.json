@@ -3,8 +3,7 @@
     "host": "labralords-api",
     "port": 5432,
     "username": "labralords-api",
-    "database": "labralords",
-    "ssl": "require"
+    "database": "labralords"
   },
   "cors": ["http://localhost:5173", "https://labralords.com", "https://www.labralords.com", "https://vip.epochzero.io"],
   "domain": ".epochzero.io"

@@ -42,7 +42,6 @@ services:
       - DB_HOST=labralords-db
       - DB_PORT=5432
       - DB_PASSWORD=${DB_PASSWORD}
-      - DB_SSL=prefer
     networks:
       - backend
     depends_on:
@@ -76,7 +75,6 @@ services:
       - DB_HOST=labralords-db
       - DB_PORT=5432
       - DB_PASSWORD=${DB_PASSWORD}
-      - DB_SSL=prefer
     networks:
       - backend
     depends_on:
@@ -95,7 +93,6 @@ services:
       - DB_HOST=labralords-db
       - DB_PORT=5432
       - DB_PASSWORD=${DB_PASSWORD}
-      - DB_SSL=prefer
     networks:
       - backend
     depends_on:
@@ -114,7 +111,6 @@ services:
       - DB_HOST=labralords-db
       - DB_PORT=5432
       - DB_PASSWORD=${DB_PASSWORD}
-      - DB_SSL=prefer
     networks:
       - backend
     depends_on:
@@ -133,7 +129,6 @@ services:
       - DB_HOST=labralords-db
       - DB_PORT=5432
       - DB_PASSWORD=${DB_PASSWORD}
-      - DB_SSL=prefer
     networks:
       - backend
     depends_on:
@@ -152,7 +147,6 @@ services:
       - DB_HOST=labralords-db
       - DB_PORT=5432
       - DB_PASSWORD=${DB_PASSWORD}
-      - DB_SSL=prefer
     networks:
       - backend
     depends_on:
@@ -171,7 +165,6 @@ services:
       - DB_HOST=labralords-db
       - DB_PORT=5432
       - DB_PASSWORD=${DB_PASSWORD}
-      - DB_SSL=prefer
     networks:
       - backend
     depends_on:
@@ -190,7 +183,6 @@ services:
       - DB_HOST=labralords-db
       - DB_PORT=5432
       - DB_PASSWORD=${DB_PASSWORD}
-      - DB_SSL=prefer
     networks:
       - backend
     depends_on:
