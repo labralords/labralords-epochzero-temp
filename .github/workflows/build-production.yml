@@ -38,45 +38,29 @@ jobs:
         with:
           fetch-depth: 0
 
-      # - uses: dorny/paths-filter@v2
-      #   id: changes
-      #   with:
-      #     base: 'main'
-      #     filters: |
-      #       has_change:
-      #         - 'services/${{ matrix.workspace }}/**'
-      #         - 'packages/**'
-      #         - 'manifests/**'
-
       - name: Install pnpm
-        # if: steps.changes.outputs.has_change == 'true'
         uses: pnpm/action-setup@v2.0.1
         with:
           version: ${{ env.pnpm-version }}
 
       - uses: actions/setup-node@v2
-        # if: steps.changes.outputs.has_change == 'true'
         with:
           node-version: ${{ env.node-version }}
           cache: pnpm
 
       - name: Install dependencies
-        # if: steps.changes.outputs.has_change == 'true'
         run: pnpm install
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Set github short sha
-        # if: steps.changes.outputs.has_change == 'true'
         id: short_sha
         run: echo "::set-output name=short_sha::${{ env.overlays }}-$(git rev-parse --short HEAD)"
 
       - name: Output short sha
-        # if: steps.changes.outputs.has_change == 'true'
         run: echo ${{ steps.short_sha.outputs.short_sha }}
 
       - name: Build and deploy POD image
-        # if: steps.changes.outputs.has_change == 'true'
         uses: ./.github/actions/build-image
         with:
           deployment: ${{ matrix.workspace }}
